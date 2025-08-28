@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qglmm"
+version = "0.1.1"
+description = "Quick Generalized Linear Mixed Models"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Ali Akbari", email = "alek0991@gmail.com" }
+]
+dependencies = [
+  "pandas",
+  "numpy",
+  "statsmodels",
+  "scipy"
+]
