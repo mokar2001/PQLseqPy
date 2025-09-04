@@ -1,7 +1,6 @@
-# qglmm
+# PQLseqPy
 
-**qglmm** is a fast implementation of a Generalized Linear Mixed Model (GLMM) for count/binomial data with variance components.  
-It is inspired by **PQLseq** (Sun et al. 2019; PMID: 30020412), with added flexibility and significant performance improvements.
+**PQLseqPy** is a fast implementation of a PQLseq in Python. It is inspired by **PQLseq** (Sun et al. 2019; PMID: 30020412), with added flexibility and significant performance improvements.
 
 ## ✨ Features
 
@@ -15,15 +14,15 @@ It is inspired by **PQLseq** (Sun et al. 2019; PMID: 30020412), with added flexi
 - Easy to use API similar to `statsmodels`
 
 ## 📦 Installation
-You can easily install fastGLMM via Conda:
+You can easily install PQLseqPy via Conda:
 ```bash
-conda install -c bioconda fastglmm
+conda install -c bioconda PQLseqPy
 ```
 
 ## 🚀 Usage
 ```python
 import numpy as np
-from fastglmm import GLMM
+from PQLseqPy import GLMM
 
 # Simulated data
 n = 100
