@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+PQLseqPy/PQLseqPy.py
+PQLseqPy/__init__.py
+PQLseqPy.egg-info/PKG-INFO
+PQLseqPy.egg-info/SOURCES.txt
+PQLseqPy.egg-info/dependency_links.txt
+PQLseqPy.egg-info/requires.txt
+PQLseqPy.egg-info/top_level.txt

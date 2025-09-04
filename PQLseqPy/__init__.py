@@ -1,3 +1,3 @@
-from .qglmm import GLMM
+from .PQLseqPy import GLMM
 
 __all__ = ["GLMM"]
