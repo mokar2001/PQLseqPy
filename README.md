@@ -47,7 +47,7 @@ GLMM(X,Y, K,
 | `starting_step_size`    | `float`                         | Initial step size for Newton/AI updates. Auto-decays every 10 iters.                                                                      |
 | `error_tolerance`       | `float`                         | Convergence tolerance (relative change in `β` and `τ`).                                                                                   |
 | `max_iter`              | `int`                           | Maximum iterations for the AI loop.                                                                                                       |
-| `regularization_factor` | `float`                         | Regularization in matrix inversions |
+| `regularization_factor` | `float`                         | Regularization in matrix inversions. |
 
 #### Attributes (after `.fit()`)
 
