@@ -245,48 +245,6 @@ print(coef)
 
 ---
 
-## 🧪 Interpreting Results
-
-* **Fixed effects (`coef` DataFrame)**:
-
-  * `beta`: log-odds coefficients (on the logit scale)
-  * `se_beta`: standard errors from the inverse of `Xᵀ H⁻¹ X`
-  * `z_beta`, `p_beta`: Wald-type inference (large-sample)
-* **Variance components (`param` Series)**:
-
-  * `tau1`, `tau2`: random-effect scales for `K` and `I`
-  * `sigma2 = tau1 + tau2`
-  * `h2 = tau1 / (tau1 + tau2)`: fraction of variance attributed to `K` (nan if `sigma2 = 0`)
-
-> **Note:** When `tau` estimates hit boundaries (e.g., `τ2=0`), standard Wald tests may be conservative. Consider resampling-based or score test approaches if boundary issues persist.
-
----
-
-## 🛠️ Tips & Troubleshooting
-
-* **Non-convergence**:
-
-  * Increase `max_iter` (e.g., 500)
-  * Loosen/tighten `error_tolerance`
-  * Use `regularization_factor` (e.g., `1e-3` to `1e-2`)
-  * Provide a better-conditioned `K` (e.g., add small jitter: `K += 1e-6 * I`)
-
-* **Numerical instability**:
-
-  * Scale covariates to have similar magnitudes
-  * Ensure `K` is PSD (use `K = (K + K.T)/2` and clip tiny negative eigenvalues)
-
-* **Design matrix `X`**:
-
-  * Must include an **intercept** (first column of ones)
-  * Avoid perfect multicollinearity
-
-* **Counts `Y`**:
-
-  * Must be non-negative; second column (failures) must be **≥ 1** to avoid degenerate `lib_size`
-
----
-
 ## 📖 Citation
 
 If you use this software in academic work, please cite:
