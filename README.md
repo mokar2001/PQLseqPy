@@ -76,84 +76,9 @@ GLMM(X,Y, K,
 
 ---
 
-## 📚 End-to-End Examples (All Arguments)
+## 📚 Example
 
-Below are small, focused examples showing how to use each set of options.
-
-### 1) Default inference of `τ1` and `τ2`
-
-```python
-import numpy as np
-from PQLseqPy import GLMM
-
-n = 200
-rng = np.random.default_rng(1)
-X = np.hstack((np.ones((n, 1)), rng.standard_normal((n, 3))))
-Y = np.hstack((rng.integers(0, 20, (n, 1)), rng.integers(1, 20, (n, 1))))
-K = rng.standard_normal((n, 300)); K = K @ K.T
-
-res = GLMM(X, Y, K).fit()
-param, coef = res.summary()
-print(param)
-print(coef)
-```
-
-### 2) **Null model** (intercept-only fixed effects)
-
-```python
-import numpy as np
-from PQLseqPy import GLMM
-
-n = 150
-rng = np.random.default_rng(2)
-X = np.ones((n, 1))  # only intercept
-Y = np.hstack((rng.integers(0, 15, (n, 1)), rng.integers(1, 15, (n, 1))))
-K = rng.standard_normal((n, 200)); K = K @ K.T
-
-res = GLMM(X, Y, K).fit()
-param, coef = res.summary()
-print(param)  # β is scalar (intercept only)
-print(coef)
-```
-
-### 3) **Fixed variance components** (`fixed_tau=(τ1, τ2)`)
-
-```python
-import numpy as np
-from PQLseqPy import GLMM
-
-n = 120
-rng = np.random.default_rng(3)
-X = np.hstack((np.ones((n,1)), rng.standard_normal((n,2))))
-Y = np.hstack((rng.integers(0, 12, (n, 1)), rng.integers(1, 12, (n, 1))))
-K = rng.standard_normal((n, 100)); K = K @ K.T
-
-# Force tau1=0.05, tau2=0.01
-res = GLMM(X, Y, K, fixed_tau=(0.05, 0.01)).fit()
-param, coef = res.summary()
-print(param[['tau1','tau2','variance_model']])
-print(coef)
-```
-
-### 4) **Constrain τ2 = 0** during inference
-
-```python
-import numpy as np
-from PQLseqPy import GLMM
-
-n = 180
-rng = np.random.default_rng(4)
-X = np.hstack((np.ones((n,1)), rng.standard_normal((n,4))))
-Y = np.hstack((rng.integers(0, 18, (n, 1)), rng.integers(1, 18, (n, 1))))
-K = rng.standard_normal((n, 400)); K = K @ K.T
-
-res = GLMM(X, Y, K, tau2_set_to_zero=True).fit()
-param, coef = res.summary()
-print(param[['tau1','tau2','variance_model','h2']])
-```
-
-### 5) **Verbose** diagnostics + **adaptive step size** showcase
-
+#### Code
 ```python
 import numpy as np
 from PQLseqPy import GLMM
@@ -166,34 +91,30 @@ K = rng.standard_normal((n, 150)); K = K @ K.T
 
 res = GLMM(
     X, Y, K,
-    verbose=True,             # print per-iteration info
-    starting_step_size=1.0,   # initial step size
-    error_tolerance=1e-6,     # tighter convergence
-    max_iter=300              # allow more iterations if needed
+    verbose=False,            
+    starting_step_size=1.0,  
+    error_tolerance=1e-6,     
+    max_iter=300              
 ).fit()
-print(res.summary()[0])
+print(res.summary())
 ```
 
-### 6) **Regularization** for ill-conditioned matrices
+#### Output
+```terminal
+converged                   True
+variance_model    tau1>0, tau2>0
+iter                          18
+elapsed_time            0.012182
+tau1                    0.001796
+tau2                    0.036274
+sigma2                  0.038071
+h2                      0.047186
 
-```python
-import numpy as np
-from PQLseqPy import GLMM
-
-n = 120
-rng = np.random.default_rng(7)
-
-# Collinear X to force ill-conditioning
-x1 = rng.standard_normal(n)
-X = np.column_stack([np.ones(n), x1, x1 + 1e-6 * rng.standard_normal(n)])
-
-Y = np.hstack((rng.integers(0, 12, (n, 1)), rng.integers(1, 12, (n, 1))))
-K = rng.standard_normal((n, 90)); K = K @ K.T
-
-res = GLMM(X, Y, K, regularization_factor=1e-3).fit()
-param, coef = res.summary()
-print(param)
-print(coef)
+GLMM      beta   se_beta    z_beta    p_beta
+x1   -0.044621  0.086473 -0.516017  0.605842
+x2    0.013953  0.087819  0.158882  0.873762
+x3   -0.062288  0.086084 -0.723571  0.469329
+x4    0.142272  0.101597  1.400358  0.161406
 ```
 
 ---
