@@ -29,17 +29,6 @@ pip install PQLseqPy
 
 ---
 
-## 🔧 Dependencies
-
-* `numpy`
-* `pandas`
-* `scipy`
-* `statsmodels`
-
-These are automatically installed via pip/conda in most cases.
-
----
-
 ## ✨ Quick Start
 
 ```python
