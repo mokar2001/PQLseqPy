@@ -96,6 +96,7 @@ res = GLMM(
     error_tolerance=1e-6,     
     max_iter=300              
 ).fit()
+
 print(res.summary())
 ```
 
