@@ -22,44 +22,7 @@ pip install PQLseqPy
 
 ---
 
-## ✨ Quick Start
-
-```python
-import numpy as np
-from PQLseqPy import GLMM
-
-# Simulated data
-n = 100
-rng = np.random.default_rng(0)
-X = np.hstack((np.ones((n, 1)), rng.standard_normal((n, 2))))  # intercept + 2 covariates
-Y = np.hstack((rng.integers(0, 10, (n, 1)), rng.integers(1, 10, (n, 1))))  # successes, failures
-G = rng.standard_normal((n, 500))  # genotypes or random features
-K = G @ G.T  # covariance (n x n, PSD)
-
-# Fit the model (default: infer tau1, tau2)
-res = GLMM(X, Y, K).fit()
-
-# Summaries
-param, coef = res.summary()
-print(param)  # model/variance params
-print(coef)   # fixed effects table
-```
-
----
-
-## 🧠 Conceptual Model
-
-* **Response**: `Y` is an `(n, 2)` matrix: first column = successes, second column = failures (binomial).
-* **Mean**: `μ_i = lib_size_i * logistic(η_i)`, where `lib_size_i = Y[i,0] + Y[i,1]`
-* **Linear predictor**: `η = Xβ + u`, with random effect `u ~ N(0, τ1 K + τ2 I)`
-* **Variance components**:
-
-  * `τ1` scales the provided covariance `K`
-  * `τ2` is the iid (residual) Gaussian component
-
----
-
-## 🧾 API Reference
+## 🧾 API Structure 
 
 ```python
 GLMM(X,Y, K, 
