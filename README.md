@@ -79,7 +79,16 @@ print(coef)   # fixed effects table
 
 ## 🧾 API Reference
 
-### `GLMM(X, Y, K, fixed_tau=None, tau2_set_to_zero=False, verbose=False, starting_step_size=1, error_tolerance=1e-5, max_iter=200, regularization_factor=0)`
+```python
+GLMM(X,Y, K, 
+  fixed_tau=None,
+  tau2_set_to_zero=False,
+  verbose=False,
+  starting_step_size=1,
+  error_tolerance=1e-5,
+  max_iter=200,
+  regularization_factor=0)
+```
 
 #### Parameters
 
