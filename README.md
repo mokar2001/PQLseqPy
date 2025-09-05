@@ -2,13 +2,6 @@
 
 **PQLseqPy** is a fast Python implementation of Penalized Quasi-Likelihood for sequence count data inspired by **PQLseq** (Sun et al., 2019; PMID: 30020412), with added flexibility and significant performance improvements.
 
-It currently provides a **Generalized Linear Mixed Model (GLMM)** for **binomial** outcomes with a **logit** link, supporting:
-
-* Efficient AI (Average Information) updates
-* Optional fixed or inferred variance components (`tau1`, `tau2`)
-* Adaptive step size + optional regularization for numerical stability
-* A simple API modeled after `statsmodels`
-
 ---
 
 ## 📦 Installation
