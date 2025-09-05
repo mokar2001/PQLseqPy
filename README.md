@@ -14,7 +14,7 @@
 conda install -c bioconda PQLseqPy
 ```
 
-#### pip
+#### Pip
 
 ```bash
 pip install PQLseqPy
