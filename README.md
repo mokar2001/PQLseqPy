@@ -22,7 +22,7 @@ pip install PQLseqPy
 
 ---
 
-## 🧾 API Structure 
+## 🧾 Parameters & Attributes 
 
 ```python
 GLMM(X,Y, K, 
