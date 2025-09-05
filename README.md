@@ -19,6 +19,11 @@ You can easily install PQLseqPy via Conda:
 conda install -c bioconda PQLseqPy
 ```
 
+pip:
+```bash
+pip install PQLseqPy
+```
+
 ## 🚀 Usage
 ```python
 import numpy as np
