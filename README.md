@@ -91,19 +91,18 @@ GLMM(X,Y, K,
 ```
 
 #### Parameters
-
-| Name                    | Type                            | Shape    | Default | Description                                                                                                                               |
-| ----------------------- | ------------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `X`                     | `np.ndarray`                    | `(n, k)` | —       | Covariate matrix. **First column must be ones** (intercept).                                                                              |
-| `Y`                     | `np.ndarray`                    | `(n, 2)` | —       | Binomial outcome: `[successes, failures]`.                                                                                                |
-| `K`                     | `np.ndarray`                    | `(n, n)` | —       | Covariance (PSD) for the random effect.                                                                                                   |
-| `fixed_tau`             | `tuple(float, float)` or `None` | —        | `None`  | If provided `(tau1, tau2)`, variance components are **fixed** during fitting.                                                             |
-| `tau2_set_to_zero`      | `bool`                          | —        | `False` | If `True` and `fixed_tau is None`, constrain `τ2 = 0` during inference.                                                                   |
-| `verbose`               | `bool`                          | —        | `False` | Print per-iteration diagnostics.                                                                                                          |
-| `starting_step_size`    | `float`                         | —        | `1`     | Initial step size for Newton/AI updates. Auto-decays every 10 iters.                                                                      |
-| `error_tolerance`       | `float`                         | —        | `1e-5`  | Convergence tolerance (relative change in `β` and `τ`).                                                                                   |
-| `max_iter`              | `int`                           | —        | `200`   | Maximum iterations for the AI loop.                                                                                                       |
-| `regularization_factor` | `float`                         | —        | `0`     | Tikhonov-like regularization in matrix inversions: uses `(A + λI)^{-1}` with `λ = regularization_factor`. Helps ill-conditioned problems. |
+| Name                    | Type                            | Description                                                                                                                               |
+| ----------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `X`                     | `np.ndarray`                    | Covariate matrix. **First column must be ones** (intercept).                                                                              |
+| `Y`                     | `np.ndarray`                    | Binomial outcome: `[successes, failures]`.                                                                                                |
+| `K`                     | `np.ndarray`                    | Covariance (PSD) for the random effect.                                                                                                   |
+| `fixed_tau`             | `tuple(float, float)` or `None` | If provided `(tau1, tau2)`, variance components are **fixed** during fitting.                                                             |
+| `tau2_set_to_zero`      | `bool`                          | If `True` and `fixed_tau is None`, constrain `τ2 = 0` during inference.                                                                   |
+| `verbose`               | `bool`                          | Print per-iteration diagnostics.                                                                                                          |
+| `starting_step_size`    | `float`                         | Initial step size for Newton/AI updates. Auto-decays every 10 iters.                                                                      |
+| `error_tolerance`       | `float`                         | Convergence tolerance (relative change in `β` and `τ`).                                                                                   |
+| `max_iter`              | `int`                           | Maximum iterations for the AI loop.                                                                                                       |
+| `regularization_factor` | `float`                         | Tikhonov-like regularization in matrix inversions: uses `(A + λI)^{-1}` with `λ = regularization_factor`. Helps ill-conditioned problems. |
 
 #### Attributes (after `.fit()`)
 
