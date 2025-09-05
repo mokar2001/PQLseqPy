@@ -8,13 +8,13 @@
 
 > **Python** ≥ 3.8 recommended.
 
-Conda:
+#### Conda
 
 ```bash
 conda install -c bioconda PQLseqPy
 ```
 
-pip:
+#### pip
 
 ```bash
 pip install PQLseqPy
