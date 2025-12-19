@@ -3,43 +3,6 @@
 **PQLseqPy** is a fast Python implementation of Penalized Quasi-Likelihood for sequence count data inspired by **PQLseq** (Sun et al., 2019; PMID: 30020412), with added flexibility and significant performance improvements.
 
 ---
-## 🧮 Mathematical Background
-
-PQLseqPy implements a **Generalized Linear Mixed Model (GLMM)** specifically designed for binomial count data. The model handles overdispersion and sample relatedness by incorporating random effects.
-
-### 1. The Model Specification
-For each sample $i$, let $n_i$ be the total number of trials (e.g., total reads) and $y_i$ be the number of successes (e.g., methylated reads). The model is defined as:
-
-$$y_i \sim \text{Binomial}(n_i, \pi_i)$$
-
-The probability of success $\pi_i$ is related to the covariates and random effects via the **logit link function**:
-
-$$\text{logit}(\pi_i) = \ln\left(\frac{\pi_i}{1-\pi_i}\right) = \eta_i$$
-$$\eta = X\beta + b$$
-
-Where:
-* **$X$**: An $n \times p$ matrix of fixed effects (covariates).
-* **$\beta$**: A $p \times 1$ vector of fixed-effect coefficients.
-* **$b$**: An $n \times 1$ vector of random effects, where $b \sim N(0, V)$.
-
-### 2. Variance Components
-The covariance matrix $V$ of the random effects is decomposed into two components:
-
-$$V = \tau_1 K + \tau_2 I$$
-
-* **$\tau_1$**: The variance component associated with the provided kinship/structure matrix $K$.
-* **$\tau_2$**: The residual (error) variance component associated with the identity matrix $I$.
-* **Heritability ($h^2$)**: In this context, the proportion of total variance explained by the kinship structure is estimated as $h^2 = \frac{\tau_1}{\tau_1 + \tau_2}$.
-
-### 3. Parameter Estimation (PQL and AI-REML)
-Because the likelihood for GLMMs does not have a closed-form solution, PQLseqPy uses **Penalized Quasi-Likelihood (PQL)**. 
-
-1. **Iterative Updates**: The model uses a pseudo-likelihood approach to transform the binomial outcome into a continuous working variable $\tilde{Y}$.
-2. **AI-REML**: The variance components $(\tau_1, \tau_2)$ are estimated using the **Average Information (AI)** Restricted Maximum Likelihood algorithm. This method uses the second derivative (Hessian) of the likelihood to achieve significantly faster convergence than traditional EM algorithms.
-3. **Wald Test**: Once the variance components are estimated, the fixed effects $\beta$ are updated, and p-values are calculated using the Wald test:
-   $$Z = \frac{\hat{\beta}}{SE(\hat{\beta})}$$
-
----
 
 ## 📦 Installation
 
