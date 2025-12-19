@@ -3,6 +3,43 @@
 **PQLseqPy** is a fast Python implementation of Penalized Quasi-Likelihood for sequence count data inspired by **PQLseq** (Sun et al., 2019; PMID: 30020412), with added flexibility and significant performance improvements.
 
 ---
+## 🧮 Mathematical Background
+
+PQLseqPy implements a **Generalized Linear Mixed Model (GLMM)** specifically designed for binomial count data. The model handles overdispersion and sample relatedness by incorporating random effects.
+
+### 1. The Model Specification
+For each sample $i$, let $n_i$ be the total number of trials (e.g., total reads) and $y_i$ be the number of successes (e.g., methylated reads). The model is defined as:
+
+$$y_i \sim \text{Binomial}(n_i, \pi_i)$$
+
+The probability of success $\pi_i$ is related to the covariates and random effects via the **logit link function**:
+
+$$\text{logit}(\pi_i) = \ln\left(\frac{\pi_i}{1-\pi_i}\right) = \eta_i$$
+$$\eta = X\beta + b$$
+
+Where:
+* **$X$**: An $n \times p$ matrix of fixed effects (covariates).
+* **$\beta$**: A $p \times 1$ vector of fixed-effect coefficients.
+* **$b$**: An $n \times 1$ vector of random effects, where $b \sim N(0, V)$.
+
+### 2. Variance Components
+The covariance matrix $V$ of the random effects is decomposed into two components:
+
+$$V = \tau_1 K + \tau_2 I$$
+
+* **$\tau_1$**: The variance component associated with the provided kinship/structure matrix $K$.
+* **$\tau_2$**: The residual (error) variance component associated with the identity matrix $I$.
+* **Heritability ($h^2$)**: In this context, the proportion of total variance explained by the kinship structure is estimated as $h^2 = \frac{\tau_1}{\tau_1 + \tau_2}$.
+
+### 3. Parameter Estimation (PQL and AI-REML)
+Because the likelihood for GLMMs does not have a closed-form solution, PQLseqPy uses **Penalized Quasi-Likelihood (PQL)**. 
+
+1. **Iterative Updates**: The model uses a pseudo-likelihood approach to transform the binomial outcome into a continuous working variable $\tilde{Y}$.
+2. **AI-REML**: The variance components $(\tau_1, \tau_2)$ are estimated using the **Average Information (AI)** Restricted Maximum Likelihood algorithm. This method uses the second derivative (Hessian) of the likelihood to achieve significantly faster convergence than traditional EM algorithms.
+3. **Wald Test**: Once the variance components are estimated, the fixed effects $\beta$ are updated, and p-values are calculated using the Wald test:
+   $$Z = \frac{\hat{\beta}}{SE(\hat{\beta})}$$
+
+---
 
 ## 📦 Installation
 
@@ -120,12 +157,105 @@ x4    0.142272  0.101597  1.400358  0.161406
 
 ---
 
+---
+
+## 🧬 Real Example
+
+In real analysis, your data is likely stored in separate files (phenotypes, covariates, and a kinship matrix). The following example demonstrates how to:
+1. Load data from CSVs.
+2. **Align samples** to ensure $X$, $Y$, and $K$ match.
+3. Add the required intercept term.
+4. Fit the model and save results.
+
+### 1. Generate "Dummy" Files (for reproducibility)
+*Run this once to create sample files in your working directory.*
+
+```python
+import pandas as pd
+import numpy as np
+
+# Create 50 samples with IDs 'sample_0' to 'sample_49'
+ids = [f"sample_{i}" for i in range(50)]
+
+# 1. Count Data (Y): Successes and Failures
+df_counts = pd.DataFrame({
+    'methylated': np.random.randint(0, 20, 50),
+    'unmethylated': np.random.randint(5, 30, 50)
+}, index=ids)
+df_counts.to_csv("example_counts.csv")
+
+# 2. Covariates (X): Age, Sex, Batch
+df_cov = pd.DataFrame({
+    'age': np.random.normal(30, 10, 50),
+    'sex': np.random.randint(0, 2, 50), # 0=Male, 1=Female
+    'batch': np.random.randint(1, 4, 50)
+}, index=ids)
+df_cov.to_csv("example_covariates.csv")
+
+# 3. Kinship Matrix (K)
+# Generate a random positive semi-definite matrix
+G = np.random.randn(50, 100)
+K = G @ G.T
+df_kinship = pd.DataFrame(K, index=ids, columns=ids)
+df_kinship.to_csv("example_kinship.csv")
+
+print("Dummy files generated!")
+```
+
+### 2. Load and Analze
+```python
+import pandas as pd
+import numpy as np
+from PQLseqPy import GLMM
+
+# Load Data
+counts = pd.read_csv("example_counts.csv", index_col=0)
+covs = pd.read_csv("example_covariates.csv", index_col=0)
+kinship = pd.read_csv("example_kinship.csv", index_col=0)
+
+# Ensure we only use samples present in ALL three files and in the same order
+common_ids = counts.index.intersection(covs.index).intersection(kinship.index)
+
+print(f"Analyzing {len(common_ids)} overlapping samples.")
+
+Y_matched = counts.loc[common_ids]
+X_matched = covs.loc[common_ids]
+K_matched = kinship.loc[common_ids, common_ids]
+
+# Y: Must be [Success, Failure]
+Y_matrix = Y_matched[['methylated', 'unmethylated']].values
+
+# X: Add Intercept column (First column must be 1s)
+# We use the covariates: Age, Sex, Batch
+X_matrix = X_matched.values
+X_matrix = np.hstack((np.ones((X_matrix.shape[0], 1)), X_matrix))
+
+# K: Kinship matrix
+K_matrix = K_matched.values
+
+# Fit Model
+model = GLMM(
+    X=X_matrix, 
+    Y=Y_matrix, 
+    K=K_matrix,
+    verbose=True
+).fit()
+
+# View & Save Results
+stats, estimates = model.summary()
+
+# Map generic x1, x2... back to real names
+# Note: x1 is Intercept
+feature_names = ['Intercept'] + list(X_matched.columns)
+estimates.index = feature_names
+
+print(estimates)
+estimates.to_csv("pqlseqpy_results.csv")
+```
+
+
 ## 📖 Citation
 
 If you use this software in academic work, please cite:
 
 * **Akbari, et al. (2024)**. *Pervasive findings of directional selection realize the promise of ancient DNA to elucidate human adaptation.* (PMID: 39314480)
-
----
-## 🛠 Documentation & Development
-To view the full API documentation and contributor guide, visit our [Documentation Website](http://example.com).
