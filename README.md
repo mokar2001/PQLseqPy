@@ -120,8 +120,6 @@ x4    0.142272  0.101597  1.400358  0.161406
 
 ---
 
----
-
 ## 🧬 Real Example
 
 In real analysis, your data is likely stored in separate files (phenotypes, covariates, and a kinship matrix). The following example demonstrates how to:
