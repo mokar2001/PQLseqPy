@@ -127,3 +127,5 @@ If you use this software in academic work, please cite:
 * **Akbari, et al. (2024)**. *Pervasive findings of directional selection realize the promise of ancient DNA to elucidate human adaptation.* (PMID: 39314480)
 
 ---
+## 🛠 Documentation & Development
+To view the full API documentation and contributor guide, visit our [Documentation Website](http://example.com).
