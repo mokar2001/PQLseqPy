@@ -1,4 +1,8 @@
 # PQLseqPy
+[![release](https://img.shields.io/github/v/release/alek0991/PQLseqPy)](ChangeLog.md)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/PQLseqPy/badges/version.svg)](https://anaconda.org/bioconda/PQLseqPy)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/PQLseqPy/badges/downloads.svg)](https://anaconda.org/bioconda/PQLseqPy)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/PQLseqPy/badges/latest_release_date.svg)](https://anaconda.org/bioconda/PQLseqPy)
 
 **PQLseqPy** is a fast Python implementation of Penalized Quasi-Likelihood for **binomial count data**, designed for **selection analysis using allele counts** (Akbari et al. 2026).  
 It is inspired by **PQLseq** (Sun et al. 2019), and adapted to population-genetic settings where observations are **alternative vs reference allele counts**, possibly **pooled across multiple individuals**.
