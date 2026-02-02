@@ -1,6 +1,6 @@
 # PQLseqPy
 
-**PQLseqPy** is a fast Python implementation of Penalized Quasi-Likelihood for **binomial count data**, designed for **selection analysis using allele counts** (Akbari et al. 2026).
+**PQLseqPy** is a fast Python implementation of Penalized Quasi-Likelihood for **binomial count data**, designed for **selection analysis using allele counts** (Akbari et al. 2026).  
 It is inspired by **PQLseq** (Sun et al. 2019), and adapted to population-genetic settings where observations are **alternative vs reference allele counts**, possibly **pooled across multiple individuals**.
 
 The method implements a Generalized Linear Mixed Model (GLMM) with a **logit link**, supports flexible random-effect covariance structures, and provides substantial performance and numerical-stability improvements over the original PQLseq implementation.
@@ -12,16 +12,29 @@ The method implements a Generalized Linear Mixed Model (GLMM) with a **logit lin
 Python ≥ 3.8 recommended.
 
 ### Conda
-
 ```bash
 conda install -c bioconda PQLseqPy
-```
+````
 
 ### Pip
 
 ```bash
 pip install PQLseqPy
 ```
+
+---
+
+## 🚀 Quick start
+
+```python
+from PQLseqPy import GLMM
+
+res = GLMM(X, Y, K).fit()
+param, coef = res.summary()
+```
+
+This fits the model and returns fixed-effect estimates and variance components.
+See the sections below for a detailed description of the model, assumptions, and parameters.
 
 ---
 
