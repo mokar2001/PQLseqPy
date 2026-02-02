@@ -171,7 +171,7 @@ Possible values of `variance_model` include:
 
 ---
 
-## 📚 Minimal Example
+## 📚 Example
 
 ```python
 import numpy as np
